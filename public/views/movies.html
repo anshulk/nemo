@@ -1,0 +1,16 @@
+<div class="">
+    <!--<div class="input-group">-->
+        <!--<input type="text" class="form-control" placeholder="Query string" ng-class="query">-->
+        <!--<button class="btn btn-primary" ng-click="getMovies()"> Get Movies</button>-->
+    <!--</div>-->
+    <div ng-repeat="m in movies.results">
+        <div class="card">
+            <img class="pull-left" ng-src="{{ 'https://image.tmdb.org/t/p/w300' + m.poster_path }}" alt="Movie Poster">
+
+                <h4 class="card-title">{{ m.title }}</h4>
+                <p class="card-text">{{ m.overview }}</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+
+        </div>
+    </div>
+</div>
