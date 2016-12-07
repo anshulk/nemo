@@ -1,6 +1,9 @@
 {
   "name": "nemo",
   "main": "server.js",
+  "scripts": {
+    "postinstall" : "bower install"
+  },
   "dependencies": {
     "async": "^2.1.4",
     "body-parser": "~1.4.2",
