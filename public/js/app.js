@@ -1,1 +1,1 @@
-angular.module('nemoApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'NerdCtrl', 'NerdService', 'GeekCtrl', 'GeekService']);
+angular.module('nemoApp', ['ngRoute', 'appRoutes', 'MainCtrl']);

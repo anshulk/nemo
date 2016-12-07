@@ -1,18 +1,17 @@
-angular.module('MainCtrl', []).controller('MainController', function($scope, $http) {
+angular.module('MainCtrl', []).controller('MainController', function($scope, $http){
 
-	$scope.tagline = 'To the moon and back!';
-
-	$scope.init1 = function(){
-		$scope.movies = 'Test';
-	};
-
-	$scope.init = function(){
-		console.log("Trying to get movies");
-		$http.get('/api/movies').then( function(data){
-			$scope.movies = data.data;
-		}, function(err){
-			console.log(err);
-		});
-	}
+  $scope.searchWithQuery = function(query){
+		// var query = $scope.query;
+    console.log("Query : ", query);
+    $http.get(
+      '/api/movies',
+      { params : { query : query}}
+    ).then(function(data){
+      console.log(data.data);
+      $scope.movies = data.data;
+    }, function(err){
+      console.log(err);
+    });
+  }
 
 });
