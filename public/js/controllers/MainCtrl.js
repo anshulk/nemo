@@ -1,4 +1,4 @@
-angular.module('MainCtrl', []).controller('MainController', function($scope, $http){
+angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController', function($scope, $http){
 
   $scope.searchWithQuery = function(query){
 		// var query = $scope.query;
@@ -7,8 +7,8 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
       '/api/movies',
       { params : { query : query}}
     ).then(function(data){
-      console.log(data.data);
-      $scope.movies = data.data;
+      $scope.movies = data.data.results;
+      console.log($scope.movies);
     }, function(err){
       console.log(err);
     });
