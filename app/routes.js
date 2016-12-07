@@ -1,16 +1,27 @@
-var Movie = require('./models/Movie.js');
-var mdb   = require('moviedb')('5957e53f1b383aa9112069754a87cd3f');
+var config = require('../config/config');
+var mdb    = require('moviedb')(config.key);
+var Movie  = require('./models/Movie.js');
+var async  = require('async');
 
 module.exports = function(app){
 
   app.get('/api/movies', function(req, res){
     mdb.searchMovie({query: req.query.query}, function(err, result){
       console.log(result);
-      var id = result.results[0].id;
-      mdb.movieCredits({id : id}, function(err, credits){
-        result.results[0].cast = credits.cast;
-        res.send(result);
-      });
+      async.eachOf(
+        result.results,
+        function(movie, index, cb){
+          Movie.insertCast(movie, function(err, data){
+            console.log("Data is : ", data);
+            result.results[index] = data;
+            cb();
+          });
+        },
+        function(err){
+          console.log("Sending response");
+          res.send(result);
+        }
+      );
     });
   });
 
