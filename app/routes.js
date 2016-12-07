@@ -1,5 +1,5 @@
-var Nerd = require('./models/nerd');
-var Movie = require('./models/movie');
+var Nerd = require('./models/Nerd.js');
+var Movie = require('./models/Movie.js');
 
 var mdb = require('moviedb')('5957e53f1b383aa9112069754a87cd3f');
 
@@ -36,7 +36,7 @@ module.exports = function(app) {
 		});
 
 	});
-	
+
 	app.get('/api/movies', function(req, res){
 		// Movie.find(function(err, result){
 		// 	console.log(result);
@@ -48,7 +48,7 @@ module.exports = function(app) {
 		});
 
 	});
-	
+
 	app.post('/api/movies', function(req, res){
 		mdb.searchMovie({query: 'Alien' }, function(err, result){
 			//console.log(result);

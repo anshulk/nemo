@@ -1,4 +1,4 @@
-angular.module('MainCtrl', []).controller('MainController', function($scope, $http) {
+angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController', function($scope, $http) {
 
 	$scope.tagline = 'To the moon and back!';
 
@@ -10,6 +10,7 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
 		console.log("Trying to get movies");
 		$http.get('/api/movies').then( function(data){
 			$scope.movies = data.data;
+			console.log($scope.movies);
 		}, function(err){
 			console.log(err);
 		});

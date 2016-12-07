@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "bootstrap": "4.0",
-    "angular-route": "latest"
+    "angular-route": "latest",
+    "angular-jk-rating-stars": "^1.0.3",
+    "angular-swing": "*"
   }
 }

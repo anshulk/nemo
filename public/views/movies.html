@@ -1,16 +1,39 @@
-<div class="">
-    <!--<div class="input-group">-->
-        <!--<input type="text" class="form-control" placeholder="Query string" ng-class="query">-->
-        <!--<button class="btn btn-primary" ng-click="getMovies()"> Get Movies</button>-->
-    <!--</div>-->
-    <div ng-repeat="m in movies.results">
-        <div class="card">
-            <img class="pull-left" ng-src="{{ 'https://image.tmdb.org/t/p/w300' + m.poster_path }}" alt="Movie Poster">
 
-                <h4 class="card-title">{{ m.title }}</h4>
-                <p class="card-text">{{ m.overview }}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-
+<!--<div class="input-group">-->
+<!--<input type="text" class="form-control" placeholder="Query string" ng-class="query">-->
+<!--<button class="btn btn-primary" ng-click="getMovies()"> Get Movies</button>-->
+<!--</div>-->
+<div class="card-tray">
+  <ul >
+    <li ng-repeat="m in movies.results" ng-class="{true: 'hide', false: 'show'}[$index >2]" class="card-wrapper" card-index="{{ $index }}">
+      <div class="card">
+        <div class="img-wrapper">
+          <img class="img-responsive" ng-src="{{ 'https://image.tmdb.org/t/p/w300' + m.poster_path }}" alt="Movie Poster">
         </div>
-    </div>
+        <div class="movieinfo">
+          <div class="infotop">
+            <div class="infoleft pull-left">
+              <h4 class="card-title">{{ m.title +' ('+m.release_date.split('-')[0]+')' }}</h4>
+              <jk-rating-stars rating="m.vote_average/2" read-only="true" max-rating="5"></jk-rating-stars>
+              <span class="vote_count">({{ m.vote_count }} votes)</span>
+            </div>
+            <div class="inforight pull-right">
+              <div ng-if="m.adult === true" class="is_adult text-center">
+                A
+              </div>
+              <div ng-if="m.adult === false" class="is_uni text-center">
+                U
+              </div>
+            </div>
+          </div>
+          <div class="cast">
+
+          </div>
+          <p class="card-text overview">{{ m.overview }}</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+
+      </div>
+    </li>
+  </ul>
 </div>
