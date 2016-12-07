@@ -5,7 +5,12 @@ module.exports = function(app){
 
   app.get('/api/movies', function(req, res){
     mdb.searchMovie({query: req.query.query}, function(err, result){
-      res.send(result);
+      console.log(result);
+      var id = result.results[0].id;
+      mdb.movieCredits({id : id}, function(err, credits){
+        result.results[0].cast = credits.cast;
+        res.send(result);
+      });
     });
   });
 
