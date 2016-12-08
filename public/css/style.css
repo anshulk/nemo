@@ -5,6 +5,7 @@ body {
   background-color: #2c3e50;
   background-image: url("./../images/video-camera.svg");
   background-repeat: repeat;
+  overflow: hidden;
 }
 .show{
   display: block !important;
@@ -16,15 +17,17 @@ body {
   position: absolute;
   top: 6em;
   left: 0%;
+  width: 100%;
 }
 .card{
-  max-width: 80%;
+  max-width: 60%;
   margin: auto;
-  max-height: 28em;
+  max-height: 24em;
   padding: 0;
   border-radius: 3px;
   border: none;
   overflow: hidden;
+  box-shadow: 5px -5px 10px 0px rgba(53, 53, 53, 0.45);
 }
 .card .img-wrapper{
   /*height: 28em;*/
@@ -33,7 +36,7 @@ body {
   display: inline-block;
 }
 .card .img-wrapper img{
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   width: 100%;
   display: inline-block;
@@ -46,11 +49,33 @@ body {
   vertical-align: top;
   padding: 0.5em 0.5em 0.5em 0.5em;
 }
+.card .movieinfo .cast{
+  margin-top: 1em;
+}
+.card .movieinfo .cast-block {
+  display: inline-table;
+  text-align: left;
+  table-layout: auto;
+  width: 24%;
+}
+.card .movieinfo .cast-block .actor-name{
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  color: #484848;
+  margin-bottom: -4px;
+}
+.card .movieinfo .cast-block .character-name{
+  font-family: 'Lato', sans-serif;
+  font-size: 10px;
+  color: #777;
+  margin-bottom: 0px;
+}
 .card .movieinfo .overview{
   font-size: 0.7em;
   font-family: 'Open Sans';
   line-height: 1.5em;
   color: #777;
+  margin-top: 1em;
 }
 .card .movieinfo .card-title {
   margin-bottom: 0.15rem;
@@ -108,4 +133,37 @@ body {
 }
 .jk-rating-stars-container .button .material-icons {
   font-size: 16px;
+}
+.blockheading {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Lato;
+  margin-bottom: 0.8em;
+  position: relative;
+  margin-top: 1em;
+}
+.blockheading::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 9%;
+  background-color: rgba(2, 117, 216, 0.93);
+  bottom: -6px;
+  left: 0px;
+}
+.visible{
+  z-index: 3;
+  transition: 0.3s ease all;
+}
+.arriving{
+  z-index: 2;
+  top: 5.6em;
+  left: 0.5em;
+  transition: 0.3s ease all;
+}
+.onhold{
+  z-index: 1;
+  top: 5.2em;
+  left: 1em;
+  transition: 0.3s ease all;
 }

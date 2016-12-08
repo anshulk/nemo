@@ -1,14 +1,13 @@
-<div class="container-fluid col-md-6 offset-md-4">
+<!-- <div class="container-fluid col-md-6 offset-md-4">
     <div class="form-inline">
         <input type="text" class="form-control" placeholder="Query string" ng-model="query">
-        <button class="btn btn-primary" ng-click="searchWithQuery(query)" type="submit"> Get Movies</button>
+        <button class="btn btn-primary" ng-load="searchWithQuery(query)" type="submit"> Get Movies</button>
     </div>
-</div>
-
+</div> -->
 
 <div class="card-tray">
     <ul>
-        <li ng-repeat="m in movies" ng-class="{true: 'hide', false: 'show'}[$index >2]" class="card-wrapper"
+        <li ng-repeat="m in movies" ng-class="$index == 0 ? 'visible' : ($index == 1 ? 'arriving' : ($index == 2 ? 'onhold' : 'hide'))" class="card-wrapper"
             card-index="{{ $index }}">
             <div class="card">
                 <div class="img-wrapper">
@@ -32,11 +31,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="cast">
-
-                    </div>
+                    <h3 class="blockheading">Overview</h3>
                     <p class="card-text overview">{{ m.overview }}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <div class="cast">
+                      <h3 class="blockheading">Star Cast</h3>
+                      <div ng-repeat="actor in m.cast.slice(0,8)" class="cast-block">
+                        <p class="actor-name">
+                          {{ actor.name }}
+                        </p>
+                        <p class="character-name">
+                          {{ actor.character }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="button-holder">
+                      <button type="button" class="btn btn-sm btn-danger ignore" movie="{{ m.id }}" status="ignore">Ignore</button>
+                      <button type="button" data-ng-click="like($event)" class="btn btn-sm btn-primary like" movie="{{ m.id }}" status="like">Like</button>
+                    </div>
                 </div>
             </div>
         </li>
