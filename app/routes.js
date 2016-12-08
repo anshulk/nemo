@@ -12,7 +12,7 @@ module.exports = function(app){
         result.results,
         function(movie, index, cb){
           Movie.insertCast(movie, function(err, data){
-            console.log("Data is : ", data);
+            // console.log("Data is : ", data);
             result.results[index] = data;
             cb();
           });

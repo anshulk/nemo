@@ -4,6 +4,7 @@ var _          = require('lodash');
 module.exports = {
   insertCast: function(movie, cb){
     mdb.movieCredits({id: movie.id}, function(err, credits){
+      console.log("Credits are : ", credits);
       movie.cast = credits.cast;
       cb(null, movie);
     });
