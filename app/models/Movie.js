@@ -5,7 +5,7 @@ module.exports = {
   insertCast: function(movie, cb){
     mdb.movieCredits({id: movie.id}, function(err, credits){
       console.log("Credits are : ", credits);
-      movie.cast = credits.cast;
+      if(credits && credits.cast) movie.cast = credits.cast;
       cb(null, movie);
     });
   }
