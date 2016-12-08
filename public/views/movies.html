@@ -1,4 +1,4 @@
-<div class="container-fluid col-md-6 offset-md-4">
+<div class="container-fluid col-md-6 col-offset-md-4">
     <div class="form-inline">
         <input type="text" class="form-control" placeholder="Nemo" ng-model="query">
         <button class="btn btn-primary" ng-click="searchWithQuery(query)" type="submit"> Get Movies</button>
@@ -6,18 +6,18 @@
 </div>
 
 <div class="card-tray">
-    <ul>
-        <li ng-repeat="m in movies" ng-class="$index == 0 ? 'visible' : ($index == 1 ? 'arriving' : ($index == 2 ? 'onhold' : 'hide'))" class="card-wrapper"
-            card-index="{{ $index }}">
+    <div>
+        <div ng-repeat="m in movies" ng-class="$index == 0 ? 'visible' : ($index == 1 ? 'arriving' : ($index == 2 ? 'onhold' : 'hide'))" class="card-wrapper" card-index="{{ $index }}">
             <div class="card">
-                <div class="img-wrapper">
-                    <img class="img-responsive" ng-src="{{ 'https://image.tmdb.org/t/p/w300' + m.poster_path }}"
-                         alt="Movie Poster">
+                <div class="img-wrapper col-xs-12 col-md-4 nopadding">
+                    <img class="img-responsive" ng-src="{{ m.poster_path === null ? './../images/nia1.jpg' : 'https://image.tmdb.org/t/p/w300' + m.poster_path }}" alt="Movie Poster">
                 </div>
-                <div class="movieinfo">
+                <div class="movieinfo col-xs-12 col-md-8 ">
                     <div class="infotop">
                         <div class="infoleft pull-left">
-                            <h4 class="card-title">{{ m.title +' ('+m.release_date.split('-')[0]+')' }}</h4>
+                            <h4 class="card-title">
+                              {{ m.release_date == '' ? m.title : m.title +' ('+m.release_date.split('-')[0]+')' }}
+                            </h4>
                             <jk-rating-stars rating="m.vote_average/2" read-only="true"
                                              max-rating="5"></jk-rating-stars>
                             <span class="vote_count">({{ m.vote_count }} votes)</span>
@@ -31,10 +31,10 @@
                             </div>
                         </div>
                     </div>
-                    <h3 class="blockheading">Overview</h3>
+                    <h3 class="blockheading {{ m.overview === null || m.overview == '' ? 'hide' : '' }}">Overview</h3>
                     <p class="card-text overview">{{ m.overview }}</p>
                     <div class="cast">
-                      <h3 class="blockheading">Star Cast</h3>
+                      <h3 class="blockheading {{ m.cast.length === 0 ? 'hide' : '' }}">Star Cast</h3>
                       <div ng-repeat="actor in m.cast.slice(0,8)" class="cast-block">
                         <p class="actor-name">
                           {{ actor.name }}
@@ -44,12 +44,12 @@
                         </p>
                       </div>
                     </div>
-                    <div class="button-holder">
-                      <button type="button" data-ng-click="LetsPlay($event)" class="btn btn-sm btn-danger ignore" movie="{{ m.id }}" status="ignore">Ignore</button>
-                      <button type="button" data-ng-click="LetsPlay($event)" class="btn btn-sm btn-primary like" movie="{{ m.id }}" status="like">Like</button>
-                    </div>
+                </div>
+                <div class="button-holder col-md-3 col-xs-12 col-offset-md-9 text-right">
+                  <button type="button" data-ng-click="LetsPlay($event)" class="btn btn-sm btn-danger ignore" movie="{{ m.id }}" status="ignore">Ignore</button>
+                  <button type="button" data-ng-click="LetsPlay($event)" class="btn btn-sm btn-primary like" movie="{{ m.id }}" status="like">Like</button>
                 </div>
             </div>
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>
