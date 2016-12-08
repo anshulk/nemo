@@ -15,10 +15,12 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   };
 
   $scope.init = function(){
-    $scope.searchWithQuery('jason');
-  };
-
-  $scope.like = function(e){
+    $scope.searchWithQuery("Kung Fu Panda");
+  }
+  // $scope.init = function(){
+  //   $scope.searchWithQuery('jason');
+  // }
+  $scope.LetsPlay = function(e){
     var movie_id = e.target.attributes.movie.value;
     var status = e.target.attributes.status.value;
     var visible_card = e.toElement.offsetParent.parentNode;
@@ -26,9 +28,23 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
     var arriving_card = document.querySelectorAll("[card-index='"+(parseInt(visible_card_index)+1)+"']");
     var onhold_card = document.querySelectorAll("[card-index='"+(parseInt(visible_card_index)+2)+"']");
     var load_card = document.querySelectorAll("[card-index='"+(parseInt(visible_card_index)+3)+"']");
-    angular.element(visible_card).removeClass('visible').addClass('hide');
-    angular.element(arriving_card).removeClass('arriving').addClass('visible');
-    angular.element(onhold_card).removeClass('onhold').addClass('arriving');
-    angular.element(load_card).removeClass('hide').addClass('onhold');
+
+    if(status == 'like'){
+      angular.element(visible_card).removeClass('visible').addClass('liked');
+      setTimeout(function(){
+        angular.element(visible_card).addClass('hide');
+        angular.element(arriving_card).removeClass('arriving').addClass('visible');
+        angular.element(onhold_card).removeClass('onhold').addClass('arriving');
+        angular.element(load_card).removeClass('hide').addClass('onhold');
+      },600);
+    }else{
+      angular.element(visible_card).removeClass('visible').addClass('ignored');
+      setTimeout(function(){
+        angular.element(visible_card).addClass('hide');
+        angular.element(arriving_card).removeClass('arriving').addClass('visible');
+        angular.element(onhold_card).removeClass('onhold').addClass('arriving');
+        angular.element(load_card).removeClass('hide').addClass('onhold');
+      },600);
+    }
   }
 });
