@@ -15,7 +15,7 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   };
 
   $scope.init = function(){
-    $scope.searchWithQuery("Kung Fu Panda");
+    $scope.searchWithQuery("Nemo");
   }
   // $scope.init = function(){
   //   $scope.searchWithQuery('jason');
