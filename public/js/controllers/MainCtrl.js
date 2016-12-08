@@ -15,11 +15,9 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   };
 
   $scope.init = function(){
-    $scope.searchWithQuery("Kung Fu Panda");
-  }
-  $scope.init = function(){
     $scope.searchWithQuery('jason');
-  }
+  };
+
   $scope.like = function(e){
     var movie_id = e.target.attributes.movie.value;
     var status = e.target.attributes.status.value;
