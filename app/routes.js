@@ -25,20 +25,25 @@ module.exports = function(app){
     });
   });
 
-  app.post('/api/movies', function(req, res){
-    mdb.searchMovie({query: 'Alien'}, function(err, result){
-      //console.log(result);
-      var r = result.results;
-      for (var i in r) {
-        console.log("R I : ", r[i]);
-        var m = new Movie({'json': r[i]});
-        m.save(function(err){
-          if (!err) console.log("saved");
-        });
-      }
+  app.get('/api/popular-movies', function(re, res){
+    mdb.miscPopularMovies({}, function(err, result){
+      console.log(result);
+      async.eachOf(
+        result.results,
+        function(movie, index, cb){
+          Movie.insertCast(movie, function(err, data){
+            // console.log("Data is : ", data);
+            result.results[index] = data;
+            cb();
+          });
+        },
+        function(err){
+          console.log("Sending response");
+          res.send(result);
+        }
+      );
     });
   });
-
   // frontend routes =========================================================
   // route to handle all angular requests
   app.get('*', function(req, res){

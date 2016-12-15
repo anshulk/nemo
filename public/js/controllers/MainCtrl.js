@@ -13,10 +13,22 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
       console.log(err);
     });
   };
+  
+  $scope.getPopularMovies = function(){
+    $http.get(
+      '/api/popular-movies'
+    ).then(function(data){
+      $scope.movies = data.data.results;
+      console.log($scope.movies);
+    }, function(err){
+      console.log(err);
+    });
+  };
 
   $scope.init = function(){
-    $scope.searchWithQuery("Nemo");
-  }
+    $scope.getPopularMovies();
+    // $scope.searchWithQuery("Nemo");
+  };
   // $scope.init = function(){
   //   $scope.searchWithQuery('jason');
   // }
