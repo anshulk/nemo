@@ -26,7 +26,7 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   };
 
   $scope.init = function(){
-    $scope.getPopularMovies();
+    // $scope.getPopularMovies();
     // $scope.searchWithQuery("Nemo");
   };
   // $scope.init = function(){
