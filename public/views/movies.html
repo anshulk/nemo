@@ -1,10 +1,12 @@
-<div class="container-fluid col-md-2 offset-md-5">
+<div class="container-fluid col-md-4 offset-md-4 text-center">
     <!--<div class="form-inline">-->
         <!--<input type="text" class="form-control" placeholder="Nemo" ng-model="query">-->
         <!--<button class="btn btn-primary" ng-click="searchWithQuery(query)" type="submit"> Get Movies</button>-->
     <!--</div>-->
 
-    <a href="/auth/facebook" target="_self" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+    <a ng-if="!currentUser" href="/auth/facebook" target="_self" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+    <span ng-if="currentUser" class="text-white">Welcome {{currentUser.name.split(' ')[0]}} !</span>
+    <a ng-if="currentUser" href="/auth/logout" target="_self" class="btn btn-danger"><span class="fa fa-facebook"></span> Logout</a>
 
 </div>
 
@@ -48,8 +50,8 @@
                       </div>
                     </div>
                     <div class="button-holder">
-                      <button type="button" data-ng-click="LetsPlay($event)" class="btn btn-sm btn-danger ignore" movie="{{ m.id }}" status="ignore">Ignore</button>
-                      <button type="button" data-ng-click="LetsPlay($event)" class="btn btn-sm btn-primary like" movie="{{ m.id }}" status="like">Like</button>
+                      <button type="button" ng-click="respond({'movie_id' : m.id, 'type' : 'dislike'}); LetsPlay($event)" class="btn btn-sm btn-danger ignore" movie="{{ m.id }}" status="ignore">Ignore</button>
+                      <button type="button" ng-click="respond({'movie_id' : m.id, 'type' : 'like'in}); LetsPlay($event)" class="btn btn-sm btn-primary like" movie="{{ m.id }}" status="like">Like</button>
                     </div>
                 </div>
             </div>

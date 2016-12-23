@@ -9,7 +9,7 @@ module.exports = {
     });
     movie.genres = genres;
     mdb.movieCredits({id: movie.id}, function(err, credits){
-      console.log("Credits are : ", credits);
+      // console.log("Credits are : ", credits);
       if(credits && credits.cast) movie.cast = credits.cast;
       cb(null, movie);
     });
