@@ -4,7 +4,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 
   // home page
     .otherwise({
-      templateUrl: 'views/movies.html', controller: 'MainController', resolve: {
+      templateUrl: 'views/movies_anshul.html', controller: 'MainController', resolve: {
         logincheck: checkLoggedin
       }
     });

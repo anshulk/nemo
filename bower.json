@@ -4,6 +4,7 @@
   "dependencies": {
     "bootstrap": "4.0",
     "angular-route": "latest",
-    "angular-jk-rating-stars": "^1.0.3"
+    "angular-jk-rating-stars": "^1.0.3",
+    "lodash": "^4.17.4"
   }
 }

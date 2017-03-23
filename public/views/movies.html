@@ -23,11 +23,11 @@
                     <div class="infotop">
                         <div class="infoleft pull-left">
                             <h4 class="card-title">{{ m.title +' ('+m.release_date.split('-')[0]+')' }}</h4>
-                            <jk-rating-stars rating="m.vote_average/2" read-only="true"
+                            <jk-rating-stars class="material-icons" rating="m.vote_average/2" read-only="true"
                                              max-rating="5"></jk-rating-stars>
                             <span class="vote_count">({{ m.vote_count }} votes)</span>
                         </div>
-                        <div class="inforight pull-right">
+                        <div class="inforight pull-right ">
                             <div ng-if="m.adult === true" class="is_adult text-center">
                                 A
                             </div>
@@ -36,9 +36,9 @@
                             </div>
                         </div>
                     </div>
-                    <h3 class="blockheading">Overview</h3>
-                    <p class="card-text overview">{{ m.overview }}</p>
-                    <div class="cast">
+                    <!--<h3 class="blockheading">Overview</h3>-->
+                    <!--<p class="card-text overview">{{ m.overview }}</p>-->
+                    <div class="cast" ng-show="m.cast">
                       <h3 class="blockheading">Star Cast</h3>
                       <div ng-repeat="actor in m.cast.slice(0,8)" class="cast-block">
                         <p class="actor-name">
@@ -49,9 +49,9 @@
                         </p>
                       </div>
                     </div>
-                    <div class="button-holder">
-                      <button type="button" ng-click="respond({'movie_id' : m.id, 'type' : 'dislike'}); LetsPlay($event)" class="btn btn-sm btn-danger ignore" movie="{{ m.id }}" status="ignore">Ignore</button>
-                      <button type="button" ng-click="respond({'movie_id' : m.id, 'type' : 'like'}); LetsPlay($event)" class="btn btn-sm btn-primary like" movie="{{ m.id }}" status="like">Like</button>
+                    <div class="button-holder" >
+                      <i ng-click="respond({'movie_id' : m.id, 'type' : 'dislike'}); LetsPlay($event)" class="dislike-thumb fa fa-thumbs-down fa-2x ignore" movie="{{ m.id }}" status="ignore"></i>
+                      <i ng-click="respond({'movie_id' : m.id, 'type' : 'like'}); LetsPlay($event)" class="like-thumb fa fa-thumbs-up fa-2x like" movie="{{ m.id }}" status="like"></i>
                     </div>
                 </div>
             </div>

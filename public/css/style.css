@@ -87,6 +87,7 @@ body {
   display: inline-block;
   width: 80%;
   vertical-align: top;
+  margin-bottom: 20px;
 }
 .card .movieinfo .infotop .infoleft .vote_count{
   display: inline-block;
@@ -132,7 +133,7 @@ body {
   vertical-align: middle;
 }
 .jk-rating-stars-container .button .material-icons {
-  font-size: 16px;
+  font-size: 20px;
 }
 .blockheading {
   font-size: 14px;
@@ -288,4 +289,23 @@ body {
     top: 9.3em;
     left: 0.8em;
   }
+}
+
+.button-holder{
+    color: grey;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.dislike-thumb {
+    padding-right:10px;
+}
+
+.like-thumb:hover {
+    color: green;
+}
+
+.dislike-thumb:hover {
+    color: red;
 }

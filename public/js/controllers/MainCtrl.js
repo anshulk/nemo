@@ -1,4 +1,4 @@
-angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController', function($scope, $http){
+angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController', function($scope, $http, _){
 
   $scope.searchWithQuery = function(query){
     // var query = $scope.query;
@@ -12,27 +12,70 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   };
 
   $scope.getPopularMovies = function(){
-    $http.get('/api/popular-movies').then(function(data){
-      $scope.movies = data.data.results;
-      // console.log($scope.movies);
+    $scope.moviesRequestedForPage = (+$scope.currentPage + 1);
+    console.log("Getting popular movies page ", (+$scope.currentPage + 1) );
+    $http.get('/api/popular-movies?page=' + (+$scope.currentPage + 1)).then(function(data){
+      console.log(data);
+      $scope.currentPage = data.data.page;
+      $scope.remainingMovies += data.data.results.length;
+      $scope.movies      = $scope.movies.concat(data.data.results);
+      $scope.m = $scope.movies[0];
+      console.log("currentPage : ", $scope.currentPage);
+      console.log("$scope.remainingMovies : ", $scope.remainingMovies);
+      console.log($scope.movies);
+      console.log("M is now  :" , $scope.m);
     }, function(err){
       console.log(err);
     });
   };
 
+  $scope.getCredits = function(movie_id){
+    console.log("get credits called for ", movie_id);
+    if (!movie_id) return;
+    $http.get('/api/movie-credits?movie_id=' + movie_id)
+      .then(function(data){
+        if(!data.data.cast) return;
+        console.log("Got credits : ", data);
+        var index = _.findIndex($scope.movies, { 'id' : data.data.id} );
+        console.log("Index : ", index);
+        $scope.movies[index] = _.merge($scope.movies[index], data.data);
+        console.log("Merged : ", $scope.movies[index]);
+        // $scope.$apply();
+      })
+  };
+
   $scope.respond = function(data){
-    console.log(data);
+    console.log("Respond data : ", data);
     var res_code = data.type == 'like' ? 1 : -1;
+    $scope.remainingMovies--;
+    console.log("Remaining Movies : ", $scope.remainingMovies);
+
+    if ($scope.remainingMovies < 5 && ($scope.moviesRequestedForPage < ($scope.currentPage + 1))) {
+      $scope.getPopularMovies();
+    }
 
     $http.post('/response', {movie_id: data.movie_id, response: res_code})
       .then(function(data){
-        console.log(data);
+        $scope.getCredits($scope.movies[2].id);
+        $scope.movies.shift();
+        $scope.m = $scope.movies[0];
+        console.log("M is now  :" , $scope.m);
       }, function(err){
         console.log("Error ", err);
       });
   };
 
+  $scope.setVariables = function(){
+    $scope.remainingMovies        = 0;
+    $scope.currentPage            = 0;
+    $scope.moviesRequestedForPage = 0;
+    $scope.movies                 = [];
+    $scope.top_movie = {};
+  };
+
   $scope.init = function(){
+    console.log(_.range(1, 10));
+    $scope.setVariables();
     $scope.getPopularMovies();
     // $scope.searchWithQuery("Nemo");
   };
