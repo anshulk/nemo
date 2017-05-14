@@ -14,19 +14,43 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   $scope.getPopularMovies = function(){
     $scope.moviesRequestedForPage = (+$scope.currentPage + 1);
     console.log("Getting popular movies page ", (+$scope.currentPage + 1) );
-    $http.get('/api/popular-movies?page=' + (+$scope.currentPage + 1)).then(function(data){
+
+    var user_id_string = $scope.currentUser ? '&user_id=' + $scope.currentUser._id : '';
+    $http.get('/api/popular-movies?page=' + (+$scope.currentPage + 1)+ user_id_string).then(function(data){
       console.log(data);
       $scope.currentPage = data.data.page;
       $scope.remainingMovies += data.data.results.length;
       $scope.movies      = $scope.movies.concat(data.data.results);
-      $scope.m = $scope.movies[0];
-      console.log("currentPage : ", $scope.currentPage);
-      console.log("$scope.remainingMovies : ", $scope.remainingMovies);
-      console.log($scope.movies);
-      console.log("M is now  :" , $scope.m);
+      $scope.filterMovies();
+      if( $scope.movies.length > 0){
+        if ($scope.movies.length) $scope.getCredits($scope.movies[0].id);
+        if ($scope.movies.length > 1) $scope.getCredits($scope.movies[1].id);
+        $scope.m = $scope.movies[0];
+        console.log("currentPage : ", $scope.currentPage);
+        console.log("$scope.remainingMovies : ", $scope.remainingMovies);
+        console.log($scope.movies);
+        console.log("M is now  :" , $scope.m);
+      }
     }, function(err){
       console.log(err);
     });
+  };
+
+  $scope.filterMovies = function(){
+    if(!$scope.currentUser)
+      return;
+    var responded_movie_ids = _.map($scope.currentUser.responses, 'movie_id');
+    // console.log("responded_movie_ids : ", responded_movie_ids);
+    $scope.movies = _.filter($scope.movies, function(movie) {
+      // console.log(movie.id, responded_movie_ids.indexOf(movie.id.toString()) < 0);
+      return responded_movie_ids.indexOf(movie.id.toString()) < 0
+    });
+    // console.log("Filtered movies : ", $scope.movies);
+    $scope.m = $scope.movies[0];
+    $scope.remainingMovies = $scope.movies.length;
+    if ($scope.remainingMovies < 5) {
+      $scope.getPopularMovies();
+    }
   };
 
   $scope.getCredits = function(movie_id){
@@ -40,6 +64,10 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
         console.log("Index : ", index);
         $scope.movies[index] = _.merge($scope.movies[index], data.data);
         console.log("Merged : ", $scope.movies[index]);
+
+        $(function () {
+                  $('.tooltipped').tooltip({delay: 5});
+              });
         // $scope.$apply();
       })
   };
@@ -47,15 +75,16 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
   $scope.respond = function(data){
     console.log("Respond data : ", data);
     var res_code = data.type == 'like' ? 1 : -1;
-    $scope.remainingMovies--;
-    console.log("Remaining Movies : ", $scope.remainingMovies);
 
-    if ($scope.remainingMovies < 5 && ($scope.moviesRequestedForPage < ($scope.currentPage + 1))) {
-      $scope.getPopularMovies();
-    }
-
-    $http.post('/response', {movie_id: data.movie_id, response: res_code})
+    $http.post('/response', {movie_id: data.movie_id, response: res_code, user: $scope.currentUser})
       .then(function(data){
+        console.log("Response request : ", data, " m is :", $scope.m );
+        $scope.remainingMovies--;
+        console.log("Remaining Movies : ", $scope.remainingMovies);
+
+        if ($scope.remainingMovies < 5 && ($scope.moviesRequestedForPage < ($scope.currentPage + 1))) {
+          $scope.getPopularMovies();
+        }
         $scope.getCredits($scope.movies[2].id);
         $scope.movies.shift();
         $scope.m = $scope.movies[0];
@@ -71,10 +100,30 @@ angular.module('MainCtrl', ['jkAngularRatingStars']).controller('MainController'
     $scope.moviesRequestedForPage = 0;
     $scope.movies                 = [];
     $scope.top_movie = {};
+    $scope.genres = {
+      10402: "Music",
+      10749: "Romance",
+      10751: "Family",
+      10752: "War",
+      10770: "TV Movie",
+      12   : "Adventure",
+      14   : "Fantasy",
+      16   : "Animation",
+      18   : "Drama",
+      27   : "Horror",
+      28   : "Action",
+      35   : "Comedy",
+      36   : "History",
+      37   : "Western",
+      53   : "Thriller",
+      80   : "Crime",
+      878  : "Science Fiction",
+      9648 : "Mystery",
+      99   : "Documentary"
+    }
   };
 
   $scope.init = function(){
-    console.log(_.range(1, 10));
     $scope.setVariables();
     $scope.getPopularMovies();
     // $scope.searchWithQuery("Nemo");

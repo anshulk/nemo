@@ -25,20 +25,8 @@ var movies = function(req, res){
 var popularMovies = function(req, res){
   console.log('Popular Movies page requested :', req.query.page);
   mdb.miscPopularMovies({'page': req.query.page}, function(err, result){
-
     console.log("Got total "+result.results.length+" popular movies");
-    var first3 = result.results.splice(0,0); // No credits for now
-
-    async.eachOf(first3, function(movie, index, cb){
-      Movie.insertCast(movie, function(err, data){
-        // console.log("Data is : ", data);
-        result.results[index] = data;
-        cb();
-      });
-    }, function(err){
-      console.log("Sending response");
-      res.send(result);
-    });
+    res.send(result);
   });
 };
 

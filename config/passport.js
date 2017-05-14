@@ -33,7 +33,7 @@ module.exports = function(passport){
       clientID     : configAuth.facebookAuth.clientID,
       clientSecret : configAuth.facebookAuth.clientSecret,
       callbackURL  : configAuth.facebookAuth.callbackURL,
-      profileFields: ['id', 'displayName', 'email', 'photos']
+      profileFields: ['id', 'displayName', 'email', 'picture.type(large)']
     },
 
     // facebook will send back the token and profile
@@ -69,7 +69,7 @@ module.exports = function(passport){
           user.name = profile.displayName;
           user.email = profile.emails[0].value;
           user.picture = user.facebook.picture;
-          
+
           // save our user to the database
           user.save(function(err){
             if (err)

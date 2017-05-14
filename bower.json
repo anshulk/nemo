@@ -5,6 +5,7 @@
     "bootstrap": "4.0",
     "angular-route": "latest",
     "angular-jk-rating-stars": "^1.0.3",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "materialize": "^0.98.2"
   }
 }

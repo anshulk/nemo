@@ -37,11 +37,11 @@ userSchema.methods.saveResponse = function(response){
   } else {
     this.responses.push(response);
   }
-  
+
   console.log(this);
   this.save();
   return this;
 };
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema)

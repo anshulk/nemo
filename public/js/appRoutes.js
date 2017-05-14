@@ -15,7 +15,8 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', '
 var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
   var deferred = $q.defer();
   console.log("In checkLoggedIn frontend");
-  $http.get('/loggedin').success(function(user){
+  $http.get('/loggedin').then(function(data){
+    var user = data.data;
     console.log("User ", user);
     $rootScope.errorMessage = null;
     //User is Authenticated

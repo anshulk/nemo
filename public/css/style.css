@@ -309,3 +309,18 @@ body {
 .dislike-thumb:hover {
     color: red;
 }
+
+.nemo-stars .button {
+  font-size: 50px;
+  text-shadow: none !important;
+}
+
+.nemo-stars .star-button.star-on {
+  color: #003399;
+  /*text-shadow: none !important;*/
+}
+
+.nemo-stars .star-button.star-off {
+  color: #99ccff;
+  /*text-shadow: none !important;*/
+}
