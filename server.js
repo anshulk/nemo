@@ -22,8 +22,8 @@ global.mdb        = require('moviedb')(config.key);
 global.mongoose   = require('mongoose');
 global.bcrypt     = require('bcrypt-nodejs');
 
-global.User   = require(BASE_PATH + 'app/models/User.js');
-global.Movie  = require(BASE_PATH + 'app/models/Movie.js');
+global.User   = require(BASE_PATH + 'app/models/User');
+global.Movie  = require(BASE_PATH + 'app/models/Movie');
 
 // config files
 var db = require('./config/db');
