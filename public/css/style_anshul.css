@@ -25,3 +25,7 @@
 }
 
 .nemo-stars .button{ text-shadow: none;}
+
+.z-depth-5-red {
+  box-shadow: 0 16px 24px 2px #ee6e73, 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.3);
+}

@@ -1,11 +1,3 @@
-var config = require(BASE_PATH + 'config/config');
-var User   = require(BASE_PATH + 'app/models/user');
-var Movie  = require(BASE_PATH + 'app/models/Movie.js');
-
-var mdb    = require('moviedb')(config.key);
-var router = require('express').Router();
-var async  = require('async');
-
 module.exports = function(app, passport){
 
   app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
@@ -32,19 +24,6 @@ module.exports = function(app, passport){
     res.json(req.user);
   });
 
-  app.post('/response', function(req, res){
-
-    console.log("req.body : ", req.body);
-    if (req.user) User.findOne({'_id': req.user.id}, function(err, user){
-      console.log("Found user ", user);
-      if (err)
-        res.fail(err); else {
-        user.saveResponse(req.body);
-
-        res.send('Done');
-      }
-    });
-  });
 };
 
 function isLoggedIn(req, res, next){

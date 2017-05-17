@@ -1,11 +1,3 @@
-var config = require(BASE_PATH + 'config/config');
-var User   = require(BASE_PATH + 'app/models/user');
-var Movie  = require(BASE_PATH + 'app/models/Movie.js');
-
-var mdb    = require('moviedb')(config.key);
-var router = require('express').Router();
-var async  = require('async');
-
 var movies = function(req, res){
   mdb.searchMovie({query: req.query.query}, function(err, result){
     console.log(result);
@@ -39,10 +31,43 @@ var credits = function(req, res){
   });
 };
 
+var response = function(req, res){
+  console.log("api/response req.body : ", req.body);
+  if (req.user) User.findOne({'_id': req.body.user_id}, function(err, user){
+    if (user) console.log("Found user ");
+    if (err)
+      res.send(err); else {
+      user.saveResponse(req.body);
+      user.editScores(req.body, function(err, that){
+        that.save();
+        console.log("user object saved");
+        res.send('Done');
+      });
+    }
+  });
+};
+
+var recommendations = function(req, res){
+  console.log("Recommendations req query : ", req.query);
+  if (req.query.user_id) User.findOne({'_id': req.query.user_id}, function(err, user){
+    if (user)console.log("Found user ");
+    if (err) res.send(err);
+    else {
+      user.getRecommendations(function(err, movies){
+        if (err) res.send(err);
+        else res.json({ results: movies });
+      });
+    }
+  });
+  else res.send("No user");
+}
+
 // routes
 
 router.get('/movies', movies);
 router.get('/popular-movies', popularMovies);
 router.get('/movie-credits', credits);
+router.get('/recommendations', recommendations);
+router.post('/response', response);
 
 module.exports = router;

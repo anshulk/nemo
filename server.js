@@ -1,7 +1,6 @@
 // modules =================================================
 var express        = require('express');
 var app            = express();
-var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var passport       = require('passport');
@@ -11,16 +10,28 @@ var cookieParser   = require('cookie-parser');
 var session        = require('express-session');
 var MongoStore     = require('connect-mongo')(session);
 
-// config files
-var db = require('./config/db');
-require('./config/passport')(passport);
+global._          = require('lodash');
+global.async  = require('async');
+global.router = require('express').Router();
 
 // Export app base path
 global['BASE_PATH'] = __dirname + '/';
 
+global.config     = require(BASE_PATH + '/config/config');
+global.mdb        = require('moviedb')(config.key);
+global.mongoose   = require('mongoose');
+global.bcrypt     = require('bcrypt-nodejs');
+
+global.User   = require(BASE_PATH + 'app/models/User');
+global.Movie  = require(BASE_PATH + 'app/models/Movie');
+
+// config files
+var db = require('./config/db');
+require('./config/passport')(passport);
+
 // routes
-var api = require('./app/routes/api');
-var all = require('./app/routes/all');
+var api = require(BASE_PATH + '/app/routes/api');
+var all = require(BASE_PATH + '/app/routes/all');
 
 var port = process.env.PORT || 8080; // set our port
 mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)

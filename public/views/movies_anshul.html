@@ -4,17 +4,18 @@
   <li><a ng-if="currentUser" class="waves-effect" href="/auth/logout" target="_self">Logout</a></li>
 </ul>
 
-<!-- <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red tooltipped" data-position="bottom" data-delay="5" data-tooltip="est">
-      <i class="large material-icons">mode_edit</i>
+<div class="fixed-action-btn hide-on-small-and-down">
+    <a class="btn-floating btn-large red" ng-class="{pulse: recommendations.length && !showing_recommendations }"
+    ng-click="toggleRecommendations()">
+      <i class="large material-icons">movie</i>
     </a>
-    <ul>
-      <li><a class="btn-floating red" data-position="bottom" data-delay="5" data-tooltip="est"><i class="material-icons">insert_chart</i></a></li>
+    <!-- <ul>
+      <li><a class="btn-floating red tooltipped" data-position="left" data-delay="5" data-tooltip="recommend"><i class="material-icons">insert_chart</i></a></li>
       <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
       <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
       <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-    </ul>
-  </div> -->
+    </ul> -->
+  </div>
 
 <!-- <nav class="searchbar" ng-hide="hidesearchbar" ng-init="hidesearchbar=true">
   <form>
@@ -74,7 +75,9 @@
 
       <div class="row">
         <div class="col s4">
-          <span class="brand-logo">nemo</span>
+          <span class="brand-logo">
+            <!-- <img class="responsive-img" src="/images/nemotp.png"> -->
+            nemo</span>
           <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
 
@@ -89,7 +92,11 @@
           </form>
         </div> -->
 
-        <div class="col s4 offset-s4 hide-on-med-and-down">
+        <div class="col s2 offset-s6 hide-on-med-and-up" ng-if="recommendations.length">
+          <i class="small material-icons" ng-click="toggleRecommendations()">movie</i>
+        </div>
+
+        <div class="col s4 offset-s4 hide-on-small-and-down">
           <ul class="right">
             <li>
               <a ng-if="!currentUser" href="/auth/facebook" target="_self">Facebook Login</a>
@@ -121,12 +128,16 @@
         <li>
           <div class="divider"></div>
         </li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li> -->
+        <li><a class="subheader">Subheader</a></li> -->
+        <li>  <a class="waves-effect" ng-class="{pulse: recommendations.length && !showing_recommendations }"
+          ng-click="toggleRecommendations()">Recommendations
+            <i class="large material-icons right">movie</i>
+          </a></li>
         <li>
           <div class="divider"></div>
         </li>
-        <li><a ng-if="currentUser" class="waves-effect" href="/auth/logout" target="_self">Logout</a></li>
+        <li><a ng-if="currentUser" class="waves-effect" href="/auth/logout" target="_self">Logout
+          <i class="large material-icons right">power_settings_new</i></a></li>
       </ul>
 
     </div>
@@ -173,8 +184,8 @@
         <!--Above movie card content end-->
 
         <!--Movie card for large screens-->
-        <div class="col m10 offset-m1  hide-on-small-and-down">
-          <div class="card horizontal z-depth-5 sticky-action">
+        <div class="col l10 offset-l1 m4 offset-m4  hide-on-small-and-down">
+          <div class="card horizontal z-depth-5 sticky-action" ng-class="{ 'z-depth-5-red' : showing_recommendations }">
             <div class="card-image waves-effect waves-block waves-light">
               <img ng-src="{{ 'https://image.tmdb.org/t/p/w300' + m.poster_path }}">
             </div>
@@ -184,7 +195,7 @@
 
                 <jk-rating-stars rating="m.vote_average/2" read-only="true" max-rating="5" class="nemo-stars"></jk-rating-stars>
                 <a class="btn-flat disabled">{{m.release_date.split('-')[0]}}</a>
-                <p class="text-flow">{{m.overview | limitTo:200}}{{m.overview.length > 200 ? '...' : ''}}</p>
+                <p class="text-flow">{{m.overview | limitTo:150}}{{m.overview.length > 150 ? '...' : ''}}</p>
               </div>
               <div class="card-content">
                 <div class="chip tooltipped" ng-repeat="cast in m.cast | limitTo:5" data-position="top" data-delay="5" data-tooltip="{{cast.character}}"  ng-if="m.cast">
@@ -209,16 +220,21 @@
               <!--Insert tabs here-->
               <div class="card-action row no-padding-bottom valign-wrapper" style="margin-bottom:0;">
                 <div class="col s6 left-align">
-                  <a class="badge" ng-repeat="(i,id) in m.genre_ids | limitTo:3">
-                {{genres[id]}}
-                <!-- <a ng-if="i < m.genre_ids.length"><br></a> -->
+                  <a class="badge" ng-if="m.genre_ids" ng-repeat="(i,id) in m.genre_ids | limitTo:3">
+                    {{genres[id]}}
+                  </a>
+                  <a class="badge" ng-if="m.genres" ng-repeat="genre in m.genres | limitTo:3">
+                    {{genre.name}}
                   </a>
                 </div>
                 <div class="col s6 right-align">
-                  <a class="btn-floating waves-effect waves-light red">
-                    <i class="material-icons" ng-click="respond({'movie_id' : m.id, 'type' : 'dislike'});">thumb_down</i></a>
-                  <a class="btn-floating waves-effect waves-light green">
-                    <i class="material-icons" ng-click="respond({'movie_id' : m.id, 'type' : 'like'});">thumb_up</i></a>
+                  <a ng-if="!currentUser" class="waves-effect waves-light btn blue" href="/auth/facebook" target="_self">fb login
+                  <i class="material-icons right">person_pin</i></a>
+
+                  <a ng-if="currentUser" ng-class="{disabled: responding}" class="btn-floating waves-effect waves-light red">
+                    <i class="material-icons small" ng-click="respond({'movie_id' : m.id, 'type' : 'dislike'});">thumb_down</i></a>
+                  <a ng-if="currentUser" ng-class="{disabled: responding}" class="btn-floating waves-effect waves-light green">
+                    <i class="material-icons small" ng-click="respond({'movie_id' : m.id, 'type' : 'like'});">thumb_up</i></a>
                 </div>
               </div>
             </div>
@@ -228,16 +244,16 @@
 
         <!--Movie card for small screens-->
         <div class="col s12 hide-on-med-and-up">
-          <div class="card z-depth-5 sticky-action">
+          <div class="card z-depth-5 sticky-action" ng-class="{ 'z-depth-5-red' : showing_recommendations }">
             <div class="card-image waves-effect waves-block waves-light">
               <img class="activator" ng-src="{{ 'https://image.tmdb.org/t/p/w300' + m.poster_path }}">
             </div>
             <div class="card-reveal">
               <!-- <div class="card-content"> -->
-                <span class="card-title">{{m.title}}<i class="material-icons right">close</i></span>
+                <span class="card-title"><i class="card-title material-icons right">close</i>{{m.title}}</span>
                 <jk-rating-stars rating="m.vote_average/2" read-only="true" max-rating="5" class="nemo-stars"></jk-rating-stars>
                 <a class="btn-flat disabled">{{m.release_date.split('-')[0]}}</a>
-                <p class="text-flow">{{m.overview | limitTo:200}}{{m.overview.length > 200 ? '...' : ''}}</p>
+                <p class="text-flow">{{m.overview | limitTo:150}}{{m.overview.length > 150 ? '...' : ''}}</p>
               <!-- </div> -->
 
               <!-- <div class="card-content"> -->
@@ -263,15 +279,21 @@
             </div>
             <div class="card-action row no-padding-bottom valign-wrapper" style="margin-bottom:0;">
               <div class="col s5 left-align">
-                <a class="badge" ng-repeat="(i,id) in m.genre_ids | limitTo:3">
-              {{genres[id]}}
-              <!-- <a ng-if="i < m.genre_ids.length"><br></a> -->
+                <a class="badge" ng-if="m.genre_ids" ng-repeat="(i,id) in m.genre_ids | limitTo:3">
+                  {{genres[id]}}
+                </a>
+                <a class="badge" ng-if="m.genres" ng-repeat="genre in m.genres | limitTo:3">
+                  {{genre.name}}
                 </a>
               </div>
               <div class="col s7 right-align">
-                <a class="btn-floating btn-large waves-effect waves-light red">
+
+                <a ng-if="!currentUser" class="waves-effect waves-light btn blue" href="/auth/facebook" target="_self">fb login
+                <i class="material-icons right">person_pin</i></a>
+
+                <a ng-if="currentUser" ng-class="{disabled: responding}" class="btn-floating btn-large waves-effect waves-light red">
                   <i class="material-icons" ng-click="respond({'movie_id' : m.id, 'type' : 'dislike'});">thumb_down</i></a>
-                <a class="btn-floating btn-large waves-effect waves-light green">
+                <a ng-if="currentUser" ng-class="{disabled: responding}" class="btn-floating btn-large waves-effect waves-light green">
                   <i class="material-icons" ng-click="respond({'movie_id' : m.id, 'type' : 'like'});">thumb_up</i></a>
               </div>
             </div>
