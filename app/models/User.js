@@ -3,11 +3,11 @@ var userSchema = mongoose.Schema({
   name: String, email: String, picture: String, facebook: {
     id: String, token: String, email: String, name: String, picture: String,
   },
-  responses: [{movie_id: { type:Number, unique: true, dropDups: true},  response: Number}],
-  scores: { genre: [{id: { type:Number, unique: true, dropDups: true }, score: Number}],
-            cast: [{id: { type:Number, unique: true, dropDups: true }, score: Number}],
-            crew: [{id: { type:Number, unique: true, dropDups: true }, score: Number}],
-            movie: [{id: { type:Number, unique: true, dropDups: true }, score: Number}],
+  responses: [{movie_id: Number,  response: Number}],
+  scores: { genre: [{id: Number, score: Number}],
+            cast: [{id: Number, score: Number}],
+            crew: [{id: Number, score: Number}],
+            movie: [{id: Number, score: Number}],
           }
 });
 
