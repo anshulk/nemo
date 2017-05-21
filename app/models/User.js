@@ -24,7 +24,7 @@ userSchema.methods.validPassword = function(password){
 
 userSchema.methods.saveResponse = function(response){
   var found = _.find(this.responses, {'movie_id' : response.movie.id });
-  console.log("Found response : ", found);
+  // console.log("Found response : ", found);
   if(found){
     this.responses = _.map(this.responses, function(res){
       if(res.movie_id == response.movie.id){
@@ -61,15 +61,19 @@ userSchema.methods.editScores = function(response, callback){
       mdb.movieSimilar({
         id: response.movie.id
       }, function(err, data) {
-        var ids = _.map(data.results, 'id');
-        cb(null, ids);
+        if(data.results ){
+          var ids = _.map(data.results, 'id');
+          cb(null, ids);
+        }
+        else
+          cb(null, []);
       })
     },
     recommend: function(cb) {
       mdb.movieRecommendations({
         id: response.movie.id
       }, function(err, data) {
-        if (err) cb(err);
+        if (!data.results) cb(null, []);
         else {
           var ids = _.map(data.results, 'id');
           cb(null, ids);
@@ -84,10 +88,10 @@ userSchema.methods.editScores = function(response, callback){
 };
 
 userSchema.methods.editScore = function(array, ids, value){
-  console.log("Array : ", array);
-  console.log("ids : ", ids);
+  console.log("Array length : ", array.length);
+  console.log("ids length : ", ids.length);
   console.log("Value : ", value);
-  ids.forEach(function(id){
+  if(ids) ids.forEach(function(id){
     // console.log("Finding : ", {id: id});
     var found = _.find(array, {id: id});
     // console.log("Found score : ", found);
@@ -109,7 +113,7 @@ userSchema.methods.editScore = function(array, ids, value){
 
 userSchema.methods.getRecommendations = function(callback){
   var responded_movie_ids = _.map(this.responses, 'movie_id');
-  console.log("responded_movie_ids : ", responded_movie_ids);
+  console.log("responded_movie_ids length : ", responded_movie_ids.length);
   var recs = _.reduce(this.scores.movie,
     function(list, entry){
       if ((entry.score > 2) && (responded_movie_ids.indexOf(entry.id) == -1))
